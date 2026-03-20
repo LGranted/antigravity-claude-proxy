@@ -50,9 +50,9 @@ npm install --ignore-scripts
 npm install sql.js --ignore-scripts
 
 echo "Применяем патчи..."
-curl -s https://raw.githubusercontent.com/LGranted/antigravity-claude-proxy/master/patch.js -o patch.js
-node patch.js ~/antigravity
-rm patch.js
+curl -s https://raw.githubusercontent.com/LGranted/antigravity-claude-proxy/master/patch.mjs -o patch.mjs
+node patch.mjs ~/antigravity
+rm patch.mjs
 
 echo "alias ag='cd ~/antigravity && node bin/cli.js'" >> ~/.bashrc
 

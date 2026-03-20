@@ -42,10 +42,7 @@ constantsContent = constantsContent.replace(
     /export const ANTIGRAVITY_SYSTEM_INSTRUCTION = `[^`]*`;/,
     'export const ANTIGRAVITY_SYSTEM_INSTRUCTION = ``;'
 );
-constantsContent = constantsContent.replace(
-    'export const GEMINI_MAX_OUTPUT_TOKENS = 16384',
-    'export const GEMINI_MAX_OUTPUT_TOKENS = 65536'
-);
+constantsContent = constantsContent.split('export const GEMINI_MAX_OUTPUT_TOKENS = 16384').join('export const GEMINI_MAX_OUTPUT_TOKENS = 65536');
 writeFileSync(join(dir, 'src/constants.js'), constantsContent);
 console.log('✓ constants.js');
 

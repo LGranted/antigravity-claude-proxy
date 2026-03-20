@@ -24,8 +24,8 @@ $npmRoot = npm root -g
 $installDir = Join-Path $npmRoot "antigravity-claude-proxy"
 
 Write-Host "Применяем патчи для ролевухи..." -ForegroundColor Yellow
-$patchUrl = "https://raw.githubusercontent.com/LGranted/antigravity-claude-proxy/master/patch.js"
-$patchPath = Join-Path $env:TEMP "patch.js"
+$patchUrl = "https://raw.githubusercontent.com/LGranted/antigravity-claude-proxy/master/patch.mjs"
+$patchPath = Join-Path $env:TEMP "patch.mjs"
 Invoke-WebRequest -Uri $patchUrl -OutFile $patchPath
 node $patchPath "$installDir"
 
