@@ -22,6 +22,8 @@ cat > src/auth/database.js << 'EOF'
 import { readFileSync } from 'fs';
 import { ANTIGRAVITY_DB_PATH } from '../constants.js';
 import initSqlJs from 'sql.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 export async function getAuthStatus(dbPath = ANTIGRAVITY_DB_PATH) {
     const SQL = await initSqlJs({
