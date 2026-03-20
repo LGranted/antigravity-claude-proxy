@@ -2,7 +2,7 @@
 set -e
 echo "=== Antigravity Claude Proxy — Android ==="
 
-pkg update -y && pkg install -y nodejs git python
+pkg update -y && pkg install -y nodejs git python make clang
 
 cd ~
 npm pack antigravity-claude-proxy@2.8.1
@@ -24,7 +24,9 @@ import { ANTIGRAVITY_DB_PATH } from '../constants.js';
 import initSqlJs from 'sql.js';
 
 export async function getAuthStatus(dbPath = ANTIGRAVITY_DB_PATH) {
-    const SQL = await initSqlJs();
+    const SQL = await initSqlJs({
+    locateFile: file => require('path').join(require('path').dirname(require.resolve('sql.js')), file)
+  });
     const fileBuffer = readFileSync(dbPath);
     const db = new SQL.Database(fileBuffer);
     const result = db.exec("SELECT value FROM ItemTable WHERE key = 'antigravityAuthStatus'");
