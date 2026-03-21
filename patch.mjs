@@ -1,12 +1,14 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'fs';
 import { join } from 'path';
 import { homedir, platform } from 'os';
+import { execSync } from 'child_process';
 
+const VERSION = '2.8.1';
 const isWindows = platform() === 'win32';
 
 function findInstallDir() {
     if (isWindows) {
-        const npmRoot = process.env.npm_root || join(process.env.APPDATA || '', 'npm', 'node_modules');
+        const npmRoot = execSync('npm root -g').toString().trim();
         return join(npmRoot, 'antigravity-claude-proxy');
     }
     return join(homedir(), 'antigravity');
@@ -29,14 +31,6 @@ function patch(filePath, patches) {
 }
 
 // 1. constants.js
-patch(join(dir, 'src/constants.js'), [
-    [
-        'You are Antigravity, a powerful agentic AI coding assistant',
-        'REPLACED_ANTIGRAVITY_PLACEHOLDER'
-    ]
-]);
-
-// Находим и заменяем всю строку ANTIGRAVITY_SYSTEM_INSTRUCTION
 let constantsContent = readFileSync(join(dir, 'src/constants.js'), 'utf8');
 constantsContent = constantsContent.replace(
     /export const ANTIGRAVITY_SYSTEM_INSTRUCTION = `[^`]*`;/,
@@ -51,7 +45,7 @@ patch(join(dir, 'src/cloudcode/request-builder.js'), [
     ["requestType: 'agent'", "requestType: 'chat'"]
 ]);
 
-// 3. thinking-utils.js — используем regex для надёжности
+// 3. thinking-utils.js
 let thinkingContent = readFileSync(join(dir, 'src/format/thinking-utils.js'), 'utf8');
 thinkingContent = thinkingContent.replace(
     /const GEMINI_THINKING_BUDGET_LIMITS = \{[\s\S]*?\};/,
