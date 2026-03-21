@@ -1,8 +1,8 @@
-# Antigravity Claude Proxy — Windows Install Script
+# Antigravity Claude Proxy - Windows Install Script
 # Run as Administrator in PowerShell
 
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Host "Пожалуйста, запустите PowerShell от имени Администратора!" -ForegroundColor Red
+    Write-Host "Please run PowerShell as Administrator!" -ForegroundColor Red
     exit 1
 }
 
@@ -13,30 +13,30 @@ try {
     $v = node --version
     Write-Host "Node.js: $v" -ForegroundColor Green
 } catch {
-    Write-Host "Node.js не найден! Скачай с https://nodejs.org" -ForegroundColor Red
+    Write-Host "Node.js not found! Download from https://nodejs.org" -ForegroundColor Red
     exit 1
 }
 
-Write-Host "Устанавливаем пакет..." -ForegroundColor Yellow
+Write-Host "Installing package..." -ForegroundColor Yellow
 npm install -g antigravity-claude-proxy@2.8.1
 
 $npmRoot = npm root -g
 $installDir = Join-Path $npmRoot "antigravity-claude-proxy"
 
-Write-Host "Применяем патчи для ролевухи..." -ForegroundColor Yellow
+Write-Host "Applying roleplay patches..." -ForegroundColor Yellow
 $patchUrl = "https://raw.githubusercontent.com/LGranted/antigravity-claude-proxy/master/patch.mjs"
 $patchPath = Join-Path $env:TEMP "patch.mjs"
 Invoke-WebRequest -Uri $patchUrl -OutFile $patchPath
 node $patchPath "$installDir"
 
-Write-Host "Открываем порт 8080..." -ForegroundColor Yellow
+Write-Host "Opening port 8080..." -ForegroundColor Yellow
 netsh advfirewall firewall delete rule name="Antigravity" 2>$null
 netsh advfirewall firewall add rule name="Antigravity" dir=in action=allow protocol=TCP localport=8080 | Out-Null
 
-Write-Host ""
-Write-Host "=== Готово! ===" -ForegroundColor Cyan
-Write-Host "Добавь аккаунт:" -ForegroundColor Yellow
+Write-Host "" 
+Write-Host "=== Done! ===" -ForegroundColor Cyan
+Write-Host "Add account:" -ForegroundColor Yellow
 Write-Host "  antigravity-claude-proxy accounts add"
-Write-Host "Запуск:" -ForegroundColor Yellow
+Write-Host "Start:" -ForegroundColor Yellow
 Write-Host "  antigravity-claude-proxy start"
-Write-Host "Подключение в ST: http://localhost:8080/v1" -ForegroundColor Yellow
+Write-Host "SillyTavern proxy: http://localhost:8080/v1" -ForegroundColor Yellow
