@@ -5,9 +5,9 @@ echo "=== Antigravity Claude Proxy — Android ==="
 pkg update -y && pkg install -y nodejs git python make clang
 
 cd ~
-npm pack antigravity-claude-proxy@2.8.1
-tar -xzf antigravity-claude-proxy-2.8.1.tgz
-rm antigravity-claude-proxy-2.8.1.tgz
+npm pack antigravity-claude-proxy@2.8.2
+tar -xzf antigravity-claude-proxy-2.8.2.tgz
+rm antigravity-claude-proxy-2.8.2.tgz
 mv package antigravity
 cd antigravity
 
